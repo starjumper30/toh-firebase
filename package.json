@@ -15,6 +15,7 @@
     "@angular/common": "~7.0.0-rc.0",
     "@angular/compiler": "~7.0.0-rc.0",
     "@angular/core": "~7.0.0-rc.0",
+    "@angular/fire": "^5.0.2",
     "@angular/forms": "~7.0.0-rc.0",
     "@angular/http": "~7.0.0-rc.0",
     "@angular/platform-browser": "~7.0.0-rc.0",
@@ -22,6 +23,7 @@
     "@angular/router": "~7.0.0-rc.0",
     "angular-in-memory-web-api": "^0.6.1",
     "core-js": "^2.5.4",
+    "firebase": "^5.5.4",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
   },

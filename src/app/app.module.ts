@@ -1,10 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import {AngularFireModule} from '@angular/fire';
 import { FormsModule } from '@angular/forms';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { AppComponent } from './app.component';
+import {environment} from '../environments/environment';
 
 
 import { InMemoryDataService } from './in-memory-data.service';
@@ -27,6 +29,7 @@ import { MessagesComponent } from './messages/messages.component';
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
