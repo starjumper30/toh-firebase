@@ -7,6 +7,8 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { AppComponent } from './app.component';
 import {environment} from '../environments/environment';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFireStorageModule} from '@angular/fire/storage';
 
 
 import { InMemoryDataService } from './in-memory-data.service';
@@ -17,6 +19,7 @@ import { HeroDetailComponent } from './hero-detail/hero-detail.component';
 import { HeroesComponent } from './heroes/heroes.component';
 import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { MessagesComponent } from './messages/messages.component';
+import { HeroImageComponent } from './hero-image/hero-image.component';
 
 @NgModule({
   declarations: [
@@ -25,11 +28,14 @@ import { MessagesComponent } from './messages/messages.component';
     HeroesComponent,
     HeroDetailComponent,
     MessagesComponent,
-    HeroSearchComponent
+    HeroSearchComponent,
+    HeroImageComponent
   ],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFireStorageModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,

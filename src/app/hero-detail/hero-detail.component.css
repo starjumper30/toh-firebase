@@ -1,4 +1,9 @@
 /* HeroDetailComponent's private CSS styles */
+app-hero-image {
+  padding-top: 15px;
+  display: block;
+}
+
 label {
   display: inline-block;
   width: 3em;

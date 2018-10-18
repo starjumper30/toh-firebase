@@ -1,7 +1,16 @@
-<h1>{{title}}</h1>
-<nav>
-  <a routerLink="/dashboard">Dashboard</a>
-  <a routerLink="/heroes">Heroes</a>
-</nav>
-<router-outlet></router-outlet>
-<app-messages></app-messages>
+<header>
+  <h1>{{title}}</h1>
+  <h1 class="auth" *ngIf="afAuth.user | async as user; else showLogin">{{ user.displayName }} <button (click)="logout()">Logout</button></h1>
+  <ng-template #showLogin>
+    <h1 class="auth">Please login. <button (click)="login()">Login with Google</button></h1>
+  </ng-template>
+</header>
+
+<ng-container *ngIf="afAuth.user | async">
+  <nav>
+    <a routerLink="/dashboard">Dashboard</a>
+    <a routerLink="/heroes">Heroes</a>
+  </nav>
+  <router-outlet></router-outlet>
+  <app-messages></app-messages>
+</ng-container>

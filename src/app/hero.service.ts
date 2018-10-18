@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
 
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import {combineLatest, from, Observable, of} from 'rxjs';
+import {catchError, filter, map, tap} from 'rxjs/operators';
 
 import { Hero } from './hero';
 import { MessageService } from './message.service';
@@ -18,7 +19,8 @@ export class HeroService {
 
   constructor(
     private http: HttpClient,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private storage: AngularFireStorage) { }
 
   /** GET heroes from the server */
   getHeroes (): Observable<Hero[]> {
@@ -69,7 +71,7 @@ export class HeroService {
   /** POST: add a new hero to the server */
   addHero (hero: Hero): Observable<Hero> {
     return this.http.post<Hero>(this.heroesUrl, hero, httpOptions).pipe(
-      tap((hero: Hero) => this.log(`added hero w/ id=${hero.id}`)),
+      tap(h => this.log(`added hero w/ id=${h.id}`)),
       catchError(this.handleError<Hero>('addHero'))
     );
   }
@@ -86,11 +88,33 @@ export class HeroService {
   }
 
   /** PUT: update the hero on the server */
-  updateHero (hero: Hero): Observable<any> {
-    return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
-      tap(_ => this.log(`updated hero id=${hero.id}`)),
-      catchError(this.handleError<any>('updateHero'))
+  updateHero (hero: Hero, profilePhoto?: File): Observable<any> {
+    return combineLatest(
+      this.http.put(this.heroesUrl, hero, httpOptions)
+        .pipe(
+          tap(_ => this.log(`updated hero id=${hero.id}`)),
+          catchError(this.handleError<any>('updateHero'))
+        ),
+      profilePhoto ? this.uploadFile(profilePhoto, hero) : of(null)
     );
+  }
+
+  getHeroProfileImage(hero: Hero): Observable<string | null> {
+    const filePath = this.buildFileName(hero);
+    const ref = this.storage.ref(filePath);
+    return ref.getDownloadURL().pipe(catchError(e => of(undefined)));
+  }
+
+  private buildFileName(hero: Hero) {
+    return 'hero-photo-' + hero.id;
+  }
+
+  private uploadFile(file: File, hero: Hero) {
+    const filePath = this.buildFileName(hero);
+    const ref: AngularFireStorageReference = this.storage.ref(filePath);
+    const task: AngularFireUploadTask = ref.put(file);
+    return from(task)
+      .pipe(catchError(this.handleError<any>('updateHeroProfilePhoto')));
   }
 
   /**

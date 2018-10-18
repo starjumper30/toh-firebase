@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { HEROES } from '../mock-heroes';
 import { HeroService } from '../hero.service';
+import {HeroImageComponent} from '../hero-image/hero-image.component';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -15,12 +16,15 @@ describe('DashboardComponent', () => {
   let getHeroesSpy;
 
   beforeEach(async(() => {
-    heroService = jasmine.createSpyObj('HeroService', ['getHeroes']);
+    heroService = jasmine.createSpyObj('HeroService', ['getHeroes', 'getHeroProfileImage']);
     getHeroesSpy = heroService.getHeroes.and.returnValue( of(HEROES) );
+    heroService.getHeroProfileImage.and.returnValue(of(null));
+
     TestBed.configureTestingModule({
       declarations: [
         DashboardComponent,
-        HeroSearchComponent
+        HeroSearchComponent,
+        HeroImageComponent
       ],
       imports: [
         RouterTestingModule.withRoutes([])

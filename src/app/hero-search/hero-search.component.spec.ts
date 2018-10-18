@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { HeroSearchComponent } from './hero-search.component';
+import {HeroService} from '../hero.service';
 
 
 describe('HeroSearchComponent', () => {
@@ -12,7 +13,10 @@ describe('HeroSearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ HeroSearchComponent ],
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule]
+      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+      providers: [
+        {provide: HeroService, useValue: jasmine.createSpyObj('HeroService', ['searchHeroes'])}
+      ]
     })
     .compileComponents();
   }));
