@@ -7,6 +7,7 @@
 </header>
 
 <ng-container *ngIf="afAuth.user | async">
+  <div>{{greeting | async}}</div>
   <nav>
     <a routerLink="/dashboard">Dashboard</a>
     <a routerLink="/heroes">Heroes</a>
